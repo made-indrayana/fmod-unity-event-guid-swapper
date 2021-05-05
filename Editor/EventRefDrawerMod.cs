@@ -32,7 +32,7 @@ namespace DoubleShot.Editor
         public static void EventRefDrawerPatcher()
         {
             string path = Path.Combine(Application.dataPath, "Plugins/FMOD/src/Editor/EventRefDrawer.cs");
-            string injectionPath = Path.Combine(Application.dataPath, "Packages/com.doubleshot.fmodeventguidswapper/Editor/EventRefDrawerPatchContent.md");
+            string injectionPath = Path.GetFullPath("Packages/com.doubleshot.fmodeventguidswapper/Editor/EventRefDrawerPatchContent.md");
 
             // Null checker for FMOD
             if (!File.Exists(path))
