@@ -1,0 +1,18 @@
+{
+  "name": "com.doubleshot.fmodeventguidswapper",
+  "version": "1.0.0",
+  "displayName": "FMOD Event/GUID Swapper",
+  "description": "This FMOD patch will add a \"Swap\" button to [FMODUnity.EventRef] property which facilitates swapping Event Path with the more robust GUID.\nPatch has been tested and verified in FMOD Version 2.00.08 up to 2.01.07.",
+  "keywords": [
+    "FMOD",
+    "Event",
+    "GUID",
+    "EventRefDrawer"
+  ],
+  "author": {
+    "name": "Made Indrayana",
+    "email": "indra@doubleshot-audio.com",
+    "url": "https://doubleshot-audio.com"
+  },
+  "hideInEditor": false
+}
