@@ -41,6 +41,19 @@ namespace DoubleShot.Editor
                 return;
             }
 
+            // Null checker for PatchContent, accounting for either Package install or .unitypackage install
+            if (!File.Exists(injectionPath))
+            {
+                bool checkIfNotPackage = File.Exists(Path.Combine(Application.dataPath, "DoubleShot/Editor/EventRefDrawerPatchContent.md"));
+                if (!checkIfNotPackage)
+                {
+                    Debug.LogWarning("Patch content not found!");
+                    return;
+                }
+                else
+                    injectionPath = Path.Combine(Application.dataPath, "DoubleShot/Editor/EventRefDrawerPatchContent.md");
+            }
+
             StringBuilder tempNewScript = new StringBuilder();
             StreamReader file = new StreamReader(path, true);
             string line;
