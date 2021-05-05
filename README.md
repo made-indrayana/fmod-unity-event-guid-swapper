@@ -15,4 +15,10 @@ Patch has been tested and verified in FMOD Version 2.00.08 up to 2.01.07.
 
 After importing the package / .unitypackage, you will have a new `Double Shot` menu in your Unity Editor. Click there and go to `Double Shot > FMOD > Patcher > Event to GUID Swapper`. It will then ask if you want to apply the patch and just click OK.
 
-## Enjoy using GUID in your project!
+<p align="center">
+...a wild <u><b>Swap Button</b></u> appears!<br><br>
+<img src="https://raw.githubusercontent.com/made-indrayana/fmod-unity-event-guid-swapper/imgs/screenshot01.png" width=400><br><br>
+<img src="https://raw.githubusercontent.com/made-indrayana/fmod-unity-event-guid-swapper/imgs/inaction.gif" width=400><br><br>
+</p>
+
+### Enjoy using GUID in your project!
