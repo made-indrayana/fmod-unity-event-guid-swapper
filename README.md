@@ -3,7 +3,9 @@
 ## Description
 
 This FMOD patch will add a "Swap" button to [FMODUnity.EventRef] property which facilitates swapping Event Path with the more robust GUID.
-Patch has been tested and verified in **FMOD Version 2.00.08 up to 2.01.07.** Version 2.02 will be checked soon.
+Patch has been tested and verified in **FMOD Version 2.00.08 up to 2.01.07.**.
+
+### Starting from FMOD 2.02.00 you won't need this patch anymore if you set your Event Linkage to GUID! :heart_eyes:
 
 ## How to install
 
