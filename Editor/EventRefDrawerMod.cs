@@ -78,6 +78,26 @@ namespace DoubleShot.Editor
                 file.DiscardBufferedData();
                 file.BaseStream.Seek(0, SeekOrigin.Begin);
 
+                #region NEW IMPLEMENTATION HERE:
+                /*
+
+                // reading all the file and then put it into temp string
+                string[] tempTxt = File.ReadAllLines(path);
+
+                // search the string array for the one you want to search 
+                int pos = ArrayUtility.IndexOf<string>(tempTxt, "                    pathProperty.stringValue = ((EditorEventRef)DragAndDrop.objectReferences[0]).Path;");
+                
+                if(pos != -1) // if found, do replace stuffs
+                {
+                    tempTxt[pos] = "                    Debug.Log(\"Success\");";
+                }
+
+                // and then write all changes at once.
+                File.WriteAllLines(path, tempTxt);
+
+                */
+                #endregion
+
                 do
                 {
                     line = file.ReadLine();
