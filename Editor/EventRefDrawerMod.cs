@@ -123,5 +123,30 @@ namespace DoubleShot.Editor
                 Debug.Log("EventRefDrawer.cs GUID Patch applied successfully.");
             }
         }
-    } 
+    }
+
+    public class EnableDisableTweak
+    {
+        private const string MenuName = "Double Shot/FMOD/Tweak Enabled";
+        private const string SettingName = "DoubleShot.FMODGUIDTweak.Enabled";
+        
+        public static bool isTweakEnabled
+        {
+            get { return EditorPrefs.GetBool(SettingName, true); }
+            set { EditorPrefs.SetBool(SettingName, value); }
+        }
+
+        [MenuItem(MenuName)]
+        private static void ToggleTweak()
+        {
+            isTweakEnabled = !isTweakEnabled;
+        }
+
+        [MenuItem(MenuName, true)]
+        private static bool ToggleTweakValidate()
+        {
+            Menu.SetChecked(MenuName, isTweakEnabled);
+            return true;
+        }
+    
 }
