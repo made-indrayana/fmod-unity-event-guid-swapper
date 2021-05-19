@@ -140,7 +140,7 @@ namespace DoubleShot.Editor
     }
     public class Patcher
     {
-        [MenuItem("Double Shot/FMOD/Patcher/Event to GUID", false, 0)]
+        [MenuItem("Double Shot/FMOD/Patcher/Event to GUID Swapper", false, 0)]
         public static void EventToGUIDPatcher()
         {
             string eventRefDrawerPath = Path.Combine(Application.dataPath, PatchContent.EventRefDrawerPath);
