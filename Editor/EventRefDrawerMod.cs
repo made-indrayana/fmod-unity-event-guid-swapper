@@ -28,18 +28,21 @@ namespace DoubleShot.Editor
 {
     public class PatchContent
     {
+        public const string EventRefDrawerPath = "Plugins/FMOD/src/Editor/EventRefDrawer.cs";
+        public const string EventBrowserPath = "Plugins/FMOD/src/Editor/EventBrowser.cs";
+
+        public const string PatchReference = "Using System;";
+        public const string PatchReferenceAppend = "// Patched by Made Indrayana using FMOD EventRefDrawer.cs Patcher - https://github.com/made-indrayana/fmod-unity-event-guid-swapper \r\n";
+
         public const string EventRefDrawerSearchString = "pathProperty.stringValue = ((EditorEventRef)DragAndDrop.objectReferences[0]).Path;";
         public const string EventRefDrawerReplaceString = @"
-                    if(EditorPrefs.GetBool(""DoubleShot.FMODGUIDTweak.Enabled"", false))
+                    if (EditorPrefs.GetBool(""DoubleShot.FMODGUIDTweak.Enabled""))
                         pathProperty.stringValue = ""{"" + ((EditorEventRef) DragAndDrop.objectReferences[0]).Guid.ToString() + ""}"";
                     else
                         pathProperty.stringValue = ((EditorEventRef) DragAndDrop.objectReferences[0]).Path;";
 
-
-
         public const string SwapperSearch = "Rect foldoutRect = new Rect(position.x + 10, position.y + baseHeight, position.width, baseHeight);";
         public const string SwapperReplace = @"
-
                 #region Added the swap GUID/Path functionality
                 
                 // Tested and verified with FMOD 2.00.08 to 2.01.07
@@ -65,6 +68,21 @@ namespace DoubleShot.Editor
 
 
                 Rect foldoutRect = new Rect(position.x + 10, position.y + baseHeight, position.width, baseHeight);";
+
+        public const string EventBrowserSearchStringOne = "string path = (data as EditorEventRef).Path;";
+        public const string EventBrowserReplaceStringOne = @"
+                    string path;
+                    if (EditorPrefs.GetBool(""DoubleShot.FMODGUIDTweak.Enabled""))
+                        path = ""{"" + (data as EditorEventRef).Guid.ToString() + ""}"";
+                    else
+                        path = (data as EditorEventRef).Path;";
+
+        public const string EventBrowserSearchStringTwo = "emitter.Event = (data as EditorEventRef).Path;";
+        public const string EventBrowserReplaceStringTwo = @"
+                        if (EditorPrefs.GetBool(""DoubleShot.FMODGUIDTweak.Enabled""))
+                            emitter.Event = ""{"" + (data as EditorEventRef).Guid.ToString() + ""}"";
+                        else
+                            emitter.Event = (data as EditorEventRef).Path;";
     }
 
     public class EventRefDrawerMod
@@ -72,96 +90,55 @@ namespace DoubleShot.Editor
         [MenuItem("Double Shot/FMOD/Patcher/Event to GUID Swapper", false, 0)]
         public static void EventRefDrawerPatcher()
         {
-            string path = Path.Combine(Application.dataPath, "Plugins/FMOD/src/Editor/EventRefDrawer.cs");
-            string injectionPath = Path.GetFullPath("Packages/com.doubleshot.fmodeventguidswapper/Editor/EventRefDrawerPatchContent.md");
+            string eventRefDrawerPath = Path.Combine(Application.dataPath, PatchContent.EventRefDrawerPath);
+            string eventBrowserPath = Path.Combine(Application.dataPath, PatchContent.EventBrowserPath);
 
             // Null checker for FMOD
-            if (!File.Exists(path))
+            if (!File.Exists(eventRefDrawerPath))
             {
                 Debug.LogWarning("FMOD src folder does not exist!");
                 return;
             }
 
-            /*
-            // Null checker for PatchContent, accounting for either Package install or .unitypackage install
-            if (!File.Exists(injectionPath))
-            {
-                bool checkIfNotPackage = File.Exists(Path.Combine(Application.dataPath, "DoubleShot/Editor/EventRefDrawerPatchContent.md"));
-                if (!checkIfNotPackage)
-                {
-                    Debug.LogWarning("Patch content not found!");
-                    return;
-                }
-                else
-                    injectionPath = Path.Combine(Application.dataPath, "DoubleShot/Editor/EventRefDrawerPatchContent.md");
-            }
-            
-
-            StringBuilder tempNewScript = new StringBuilder();
-            StreamReader file = new StreamReader(path, true);
-            string line;
-            */
 
             if (EditorUtility.DisplayDialog("Double Shot Audio Patcher",
                 "This FMOD patch will add a \"Swap\" button to [FMODUnity.EventRef] property which facilitates swapping Event Path with GUID. \n\n" +
                 "Patch has been tested and verified in FMOD Version 2.00.08 up to 2.01.07. \n\n" +
                 "Do you want to continue?", "Yes", "No"))
             {
-                /*
-                // Checks if patch is already there
-                while ((line = file.ReadLine()) != null)
+                // Check if swap patch is already applied
+                string check = File.ReadAllText(eventRefDrawerPath);
+                if (check.Contains(PatchContent.PatchReferenceAppend))
                 {
-                    if (line.Contains("#region Added the swap GUID/Path functionality"))
-                    {
-                        Debug.Log("EventRefDrawer.cs GUID Patch already applied.");
-                        file.DiscardBufferedData();
-                        file.Close();
-                        return;
-                    }
+                    Debug.Log("Event to GUID Swapper Patch already applied.");
+                    return;
                 }
-
-                file.DiscardBufferedData();
-                file.BaseStream.Seek(0, SeekOrigin.Begin);
-                file.Close();
-                */
-
-                #region NEW IMPLEMENTATION HERE:
 
                 EditorPrefs.SetBool("DoubleShot.FMODGUIDTweak.Enabled", false);
 
                 // reading all the file and then put it into temp string
-                string temp = File.ReadAllText(path);
+                string temp = File.ReadAllText(eventRefDrawerPath);
+                temp = temp.Insert(0, PatchContent.PatchReferenceAppend); // Putting reference that the file has been patched
                 temp = temp.Replace(PatchContent.EventRefDrawerSearchString, PatchContent.EventRefDrawerReplaceString);
                 temp = temp.Replace(PatchContent.SwapperSearch, PatchContent.SwapperReplace);
-                Debug.Log(temp);
+                File.WriteAllText(eventRefDrawerPath, temp);
 
-                File.WriteAllText(path, temp);
-
-                #endregion
-
-                /*
-                do
+                // Check if EventBrowser.cs patch is already applied
+                check = File.ReadAllText(eventBrowserPath);
+                if (check.Contains(PatchContent.PatchReferenceAppend))
                 {
-                    line = file.ReadLine();
-                    tempNewScript.AppendLine(line);
-                } while (!line.Contains("if (!string.IsNullOrEmpty(pathProperty.stringValue) && EventManager.EventFromPath(pathProperty.stringValue) != null)"));
+                    Debug.Log("Event to GUID Workflow Patch already applied.");
+                    return;
+                }
 
-                line = file.ReadLine();
-                tempNewScript.AppendLine(line);
-
-
-                StreamReader fileToInject = new StreamReader(injectionPath, true);
-                tempNewScript.Append(fileToInject.ReadToEnd());
-                tempNewScript.Append(file.ReadToEnd());
-                file.Close();
-                fileToInject.Close();
-
-                StreamWriter writer = new StreamWriter(path);
-                writer.Write(tempNewScript);
-                writer.Close();
-                */
+                temp = File.ReadAllText(eventBrowserPath);
+                temp = temp.Insert(0, PatchContent.PatchReferenceAppend); // Putting reference that the file has been patched
+                temp = temp.Replace(PatchContent.EventBrowserSearchStringOne, PatchContent.EventBrowserReplaceStringOne);
+                temp = temp.Replace(PatchContent.EventBrowserSearchStringTwo, PatchContent.EventBrowserReplaceStringTwo);
+                File.WriteAllText(eventBrowserPath, temp);
 
                 AssetDatabase.ImportAsset("Assets/Plugins/FMOD/src/Editor/EventRefDrawer.cs");
+                AssetDatabase.ImportAsset("Assets/Plugins/FMOD/src/Editor/EventBrowser.cs");
 
                 Debug.Log("EventRefDrawer.cs GUID Patch applied successfully.");
             }
