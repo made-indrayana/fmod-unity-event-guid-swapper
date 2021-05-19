@@ -58,3 +58,6 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+# Ignore Builds.meta in the case Unity imports from a local build folder
+Builds.meta
+
