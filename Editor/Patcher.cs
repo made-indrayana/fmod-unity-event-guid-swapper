@@ -236,6 +236,7 @@ namespace DoubleShot.Editor
         }
 
         // For debugging only
+        /*
         [MenuItem("Double Shot/Delete Key")]
         private static void DeleteKey()
         {
@@ -251,6 +252,7 @@ namespace DoubleShot.Editor
         {
             AssetDatabase.ImportAsset("Assets/Plugins/FMOD/src/Editor/EventRefDrawer.cs");
         }
+        */
     }
 
 }
