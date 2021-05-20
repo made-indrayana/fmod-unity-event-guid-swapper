@@ -37,15 +37,13 @@ namespace DoubleShot.Editor
         public const string PatchReferenceAppend = "// Patched by Made Indrayana using FMOD EventRefDrawer.cs Patcher - https://github.com/made-indrayana/fmod-unity-event-guid-swapper \r\n";
 
         public const string DrawerSearch = "pathProperty.stringValue = ((EditorEventRef)DragAndDrop.objectReferences[0]).Path;";
-        public const string DrawerReplace = @"
-                    if (EditorPrefs.GetBool(""DoubleShot.FMODGUIDTweak.Enabled""))
+        public const string DrawerReplace = @"                    if (EditorPrefs.GetBool(""DoubleShot.FMODGUIDTweak.Enabled""))
                         pathProperty.stringValue = ((EditorEventRef) DragAndDrop.objectReferences[0]).Guid.ToString(""b"");
                     else
                         pathProperty.stringValue = ((EditorEventRef) DragAndDrop.objectReferences[0]).Path;";
 
         public const string SwapperSearch = "Rect foldoutRect = new Rect(position.x + 10, position.y + baseHeight, position.width, baseHeight);";
-        public const string SwapperReplace = @"
-                #region Added the swap GUID/Path functionality
+        public const string SwapperReplace = @"                #region Added the swap GUID/Path functionality
                 
                 // Tested and verified with FMOD 2.00.08 to 2.01.07
                 Rect swapRect = new Rect(searchRect.x, position.y + baseHeight, searchRect.width * 3 + 5, baseHeight);
@@ -72,44 +70,59 @@ namespace DoubleShot.Editor
                 Rect foldoutRect = new Rect(position.x + 10, position.y + baseHeight, position.width, baseHeight);";
 
         public const string BrowserSearchOne = "string path = (data as EditorEventRef).Path;";
-        public const string BrowserReplaceOne = @"
-                    string path;
+        public const string BrowserReplaceOne = @"                    string path;
                     if (EditorPrefs.GetBool(""DoubleShot.FMODGUIDTweak.Enabled""))
                         path = (data as EditorEventRef).Guid.ToString(""b"");
                     else
                         path = (data as EditorEventRef).Path;";
 
         public const string BrowserSearchTwo = "emitter.Event = (data as EditorEventRef).Path;";
-        public const string BrowserReplaceTwo = @"
-                        if (EditorPrefs.GetBool(""DoubleShot.FMODGUIDTweak.Enabled""))
+        public const string BrowserReplaceTwo = @"                        if (EditorPrefs.GetBool(""DoubleShot.FMODGUIDTweak.Enabled""))
                             emitter.Event = (data as EditorEventRef).Guid.ToString(""b"");
                         else
                             emitter.Event = (data as EditorEventRef).Path;";
 
-        public const string BrowserSearchThree = @"                if (itemIDs.TryGetValue(path, out itemID))
-                {
-                    SetSelection(new List<int> { itemID },
-                        TreeViewSelectionOptions.RevealAndFrame | TreeViewSelectionOptions.FireSelectionChanged);
-                }
-                else
-                {
-                    SetSelection(new List<int>());
-                }";
-        public const string BrowserReplaceThree = @"
+        public const string BrowserSearchThree = @"            private void JumpToItem(string path)
+            {
+                nextFramedItemPath = path;
+                Reload();
+
+                int itemID;
                 if (itemIDs.TryGetValue(path, out itemID))
                 {
                     SetSelection(new List<int> { itemID },
                         TreeViewSelectionOptions.RevealAndFrame | TreeViewSelectionOptions.FireSelectionChanged);
                 }
-                else if (itemIDs.TryGetValue(EventManager.EventFromPath(path).name.ToString(), out itemID))
+                else
                 {
+                    SetSelection(new List<int>());
+                }
+            }";
+        public const string BrowserReplaceThree = @"
+            private void JumpToItem(string path)
+            {
+                int itemID;
+                if (path.StartsWith(""event:/""))
+                {
+                    nextFramedItemPath = path;
+                    Reload();
+                    itemIDs.TryGetValue(path, out itemID);
+                    SetSelection(new List<int> { itemID },
+                        TreeViewSelectionOptions.RevealAndFrame | TreeViewSelectionOptions.FireSelectionChanged);
+                }
+                else if (path.StartsWith(""{""))
+                {
+                    nextFramedItemPath = EventManager.EventFromPath(path).name;
+                    Reload();
+                    itemIDs.TryGetValue(EventManager.EventFromPath(path).name, out itemID);
                     SetSelection(new List<int> { itemID },
                         TreeViewSelectionOptions.RevealAndFrame | TreeViewSelectionOptions.FireSelectionChanged);
                 }
                 else
                 {
                     SetSelection(new List<int>());
-                }";
+                }
+            }";
 
     }
 
