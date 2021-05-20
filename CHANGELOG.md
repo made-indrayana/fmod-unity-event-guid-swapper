@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.1
+- Fixed issue where when using GUID, event browser won't jump to the event if the event is in a folder.
+- Updated README to indicate compatibilities problem of the GUID workflow
+
 ## 1.1.0
 
 - Selecting event through the inspector and event browser now automatically use GUID instead of still using Event Path
