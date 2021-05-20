@@ -27,7 +27,9 @@ using UnityEngine;
 namespace DoubleShot.Editor
 {
     public class PatchContent
-    {
+    {        
+        public const string SettingName = "DoubleShot.FMODGUIDTweak.Enabled";
+
         public const string EventRefDrawerPath = "Plugins/FMOD/src/Editor/EventRefDrawer.cs";
         public const string EventBrowserPath = "Plugins/FMOD/src/Editor/EventBrowser.cs";
 
@@ -199,12 +201,11 @@ namespace DoubleShot.Editor
     public class EnableDisableTweak
     {
         private const string MenuName = "Double Shot/FMOD/Use GUID as Event Path";
-        private const string SettingName = "DoubleShot.FMODGUIDTweak.Enabled";
 
         public static bool isTweakEnabled
         {
-            get { return EditorPrefs.GetBool(SettingName, false); }
-            set { EditorPrefs.SetBool(SettingName, value); }
+            get { return EditorPrefs.GetBool(PatchContent.SettingName, false); }
+            set { EditorPrefs.SetBool(PatchContent.SettingName, value); }
         }
 
         [MenuItem(MenuName)]
@@ -216,7 +217,7 @@ namespace DoubleShot.Editor
         [MenuItem(MenuName, true)]
         private static bool ToggleTweakValidate()
         {
-            if (!EditorPrefs.HasKey(SettingName))
+            if (!EditorPrefs.HasKey(PatchContent.SettingName))
                 return false;
             else
             {
