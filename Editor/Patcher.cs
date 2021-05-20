@@ -125,17 +125,7 @@ namespace DoubleShot.Editor
                 Debug.LogWarning("Event to GUID Patch is not active! To apply/reapply, go to Double Shot > FMOD > Patcher > Event to GUID");
             }
             else if (check.Contains(PatchContent.PatchReferenceAppend) && !EditorPrefs.HasKey("DoubleShot.FMODGUIDTweak.Enabled"))
-            {
-                if (EditorUtility.DisplayDialog("Double Shot Audio Patcher", "Event to GUID patch detected, but registry key for settings not found.\n\n" +
-                        "Do you want to enable using GUID by default when selecting events on FMOD Event Browser?\n\n" +
-                        "You can always change the setting in Double Shot > FMOD > Use GUID as Event Path.", "I want to use GUID as reference", "I want to use Path as reference"))
-                {
-                    EditorPrefs.SetBool("DoubleShot.FMODGUIDTweak.Enabled", true);
-                }
-                else
-                    EditorPrefs.SetBool("DoubleShot.FMODGUIDTweak.Enabled", false);
-
-            }
+                EditorPrefs.SetBool("DoubleShot.FMODGUIDTweak.Enabled", true);
         }
     }
     public class Patcher
