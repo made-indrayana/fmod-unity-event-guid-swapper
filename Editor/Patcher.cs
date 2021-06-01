@@ -61,13 +61,28 @@ namespace DoubleShot.Editor
                         property.stringValue = eventRef.Guid.ToString(""b"");
                         property.serializedObject.ApplyModifiedProperties();
                         GUI.changed = true;
-                    }
+                    } 
                 }
                 
                 #endregion
 
+                if (pathProperty.stringValue.StartsWith(""{""))
+                {
+                    Rect eventName = new Rect(position.x, position.y + baseHeight, pathRect.width, baseHeight);
+                    EditorGUI.SelectableLabel(eventName, EventManager.EventFromPath(pathProperty.stringValue).name.ToString().Substring(EventManager.EventFromPath(pathProperty.stringValue).name.ToString().LastIndexOf(""/"") + 1), EditorStyles.boldLabel);
+                }
 
-                Rect foldoutRect = new Rect(position.x + 10, position.y + baseHeight, position.width, baseHeight);";
+                Rect foldoutRect = new Rect(position.x + 10, position.y + baseHeight * 2, position.width, baseHeight);";
+
+        public const string DrawerSearchTwo = "Rect labelRect = new Rect(position.x, position.y + baseHeight * 2, width, baseHeight);";
+        public const string DrawerReplaceTwo = "Rect labelRect = new Rect(position.x, position.y + baseHeight * 3, width, baseHeight);";
+
+        public const string DrawerSearchThree = "Rect valueRect = new Rect(position.x + width + 10, position.y + baseHeight * 2, pathRect.width, baseHeight);";
+        public const string DrawerReplaceThree = "Rect valueRect = new Rect(position.x + width + 10, position.y + baseHeight * 3, pathRect.width, baseHeight);";
+
+        public const string DrawerSearchFour = "return baseHeight * (expanded ? 7 : 2);";
+        public const string DrawerReplaceFour = "return baseHeight * (expanded ? 8 : 3);";
+
 
         public const string BrowserSearchOne = "string path = (data as EditorEventRef).Path;";
         public const string BrowserReplaceOne = @"                    string path;
@@ -169,7 +184,7 @@ namespace DoubleShot.Editor
             if (EditorUtility.DisplayDialog("Double Shot Audio Patcher",
                 "This FMOD patch will add a \"Swap\" button to [FMODUnity.EventRef] property which facilitates swapping Event Path with GUID. \n\n" +
                 "In addition, this patch will allow you to use GUID by default when selecting events on FMOD Event Browser. \n\n" +
-                "Patch has been tested and verified in FMOD Version 2.00.08 up to 2.01.07. \n\n" +
+                "Patch has been tested and verified in FMOD Version 2.01.05 and  2.01.07. \n\n" +
                 "Do you want to continue?", "Yes", "No"))
             {
                 // Check if swap patch is already applied
@@ -184,6 +199,9 @@ namespace DoubleShot.Editor
                 temp = temp.Insert(0, PatchContent.PatchReferenceAppend); // Putting reference that the file has been patched
                 temp = temp.Replace(PatchContent.DrawerSearch, PatchContent.DrawerReplace);
                 temp = temp.Replace(PatchContent.SwapperSearch, PatchContent.SwapperReplace);
+                temp = temp.Replace(PatchContent.DrawerSearchTwo, PatchContent.DrawerReplaceTwo);
+                temp = temp.Replace(PatchContent.DrawerSearchThree, PatchContent.DrawerReplaceThree);
+                temp = temp.Replace(PatchContent.DrawerSearchFour, PatchContent.DrawerReplaceFour);
                 File.WriteAllText(eventRefDrawerPath, temp);
 
                 // Check if EventBrowser.cs patch is already applied
