@@ -1,6 +1,12 @@
 # Changelog
 
+## 1.1.2
+
+- Added a small event name "preview" when using GUID workflow to recognize event name easily.
+- Removed compatibility for FMOD Integration older than 2.01.05
+
 ## 1.1.1
+
 - Fixed issue where when using GUID, event browser won't jump to the event if the event is in a folder.
 - Updated README to indicate compatibilities problem of the GUID workflow
 

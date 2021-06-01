@@ -6,10 +6,7 @@ This FMOD patch will add a **Swap button** to `[FMODUnity.EventRef]` property wh
 
 Starting with version 1.1.0 I am also proud to announce that this version will add the capabilities of having **GUID Workflow!** The GUID of the event will be used *automatically* when you select/drag the event. To help workflow even more, when you click on the *Search* button beside the path entry field, the Event Browser will jump to the name of the event correctly.*
 
-**Swap button** patch has been tested and verified in **FMOD 2.00.08 up to 2.01.07 (Unity Verified)**<br>
-**GUID workflow** patch has been tested and verified in **FMOD 2.01.05 and 2.01.07 (Unity Verified)**
-
-<sup>*\*As of now, this only works for FMOD 2.01.05 and 2.01.07 due to changes on how FMOD implements the Event Browser window. Will try to work for a patch for earlier version as well.*</sup>
+**Swap button** and **GUID workflow** patch has been tested and verified in **FMOD 2.01.05 and 2.01.07 (Unity Verified)**
 
 **NOTE: Starting from FMOD 2.02.00 you won't need this patch anymore if you set your Event Linkage to GUID! :heart_eyes:**
 
