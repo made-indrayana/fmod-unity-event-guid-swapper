@@ -8,7 +8,7 @@ Starting with version 1.1.0 I am also proud to announce that this version will a
 
 **Swap button** and **GUID workflow** patch has been tested and verified in **FMOD 2.01.05 and 2.01.07 (Unity Verified)**
 
-**NOTE: Starting from FMOD 2.02.00 you won't need this patch anymore if you set your Event Linkage to GUID! :heart_eyes:**
+**NOTE: Starting from FMOD 2.01.09 you won't need this patch anymore if you set your Event Linkage to GUID! :heart_eyes:**
 
 ## How to install
 
